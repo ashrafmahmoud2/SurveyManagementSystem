@@ -1,3 +1,5 @@
+using SurveyBasket;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);

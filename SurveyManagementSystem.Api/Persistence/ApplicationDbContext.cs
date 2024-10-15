@@ -34,7 +34,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         foreach (var entityEntry in entries)
         {
-            var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId()!;
+           // var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId()!;
+            var currentUserId = "1";
 
             if (entityEntry.State == EntityState.Added)
             {

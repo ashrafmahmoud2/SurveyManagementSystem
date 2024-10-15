@@ -6,12 +6,15 @@ public class Poll: AuditableEntity
 {
    public int Id { get; set; }
 
-   public string Title { get; set; }
+   public string Title { get; set; }=string.Empty;
 
-    public string Summary { get; set; }
+    public string Summary { get; set; }=string.Empty;
+
+    public DateOnly StartsAt { get; set; }
+
+    public DateOnly EndsAt { get; set; }
 
     public bool IsPublished { get; set; }
 
-    public DateTime StartAt { get; set; }=DateTime.Now;
 
 }

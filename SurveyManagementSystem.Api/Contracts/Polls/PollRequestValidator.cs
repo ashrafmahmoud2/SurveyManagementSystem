@@ -6,25 +6,28 @@ public class PollRequestValidator : AbstractValidator<PollRequest>
 {
     public PollRequestValidator()
     {
-        //RuleFor(x => x.Email)
-        //    .NotEmpty()
-        //    .EmailAddress();
 
-        //RuleFor(x => x.FirstName)
-        //    .NotEmpty()
-        //    .Length(3, 100);
 
-        //RuleFor(x => x.LastName)
-        //    .NotEmpty()
-        //    .Length(3, 100);
+        RuleFor(x => x.Title)
+            .NotEmpty()
+            .Length(3, 10000);
+           
+          
+            
 
-        //RuleFor(x => x.Roles)
-        //    .NotNull()
-        //    .NotEmpty();
+        RuleFor(x => x.Summary)
+            .NotEmpty()
+            .Length(3, 10000);
+        
 
-        //RuleFor(x => x.Roles)
-        //    .Must(x => x.Distinct().Count() == x.Count)
-        //    .WithMessage("You cannot add duplicated role for the same user")
-        //    .When(x => x.Roles != null);
+        RuleFor(p => p.StartAt)
+            .NotEmpty()
+            .GreaterThanOrEqualTo(DateTime.Today).WithMessage("Start date cannot be in the past.");
+
+        RuleFor(p => p.EndAt)
+            .NotEmpty()
+            .GreaterThan(p => p.StartAt).WithMessage("End date must be after the start date.");
+
+
     }
 }

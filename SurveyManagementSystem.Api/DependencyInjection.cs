@@ -5,6 +5,7 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SurveyManagementSystem.Api.Services;
 using System.Reflection;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -22,8 +23,10 @@ public static class DependencyInjection
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
 
+        // Register IHttpContextAccessor
+        services.AddHttpContextAccessor();
 
-       // services.AddAuthConfig(configuration);
+        // services.AddAuthConfig(configuration);
 
         var connectionString = configuration.GetConnectionString("DefaultConnection") ??
             throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -36,7 +39,7 @@ public static class DependencyInjection
             .AddMapsterConfig()
             .AddFluentValidationConfig();
 
-        services.AddScoped<IAuthService, AuthService>();
+       services.AddScoped<IPollService, PollService>();
        
 
       
