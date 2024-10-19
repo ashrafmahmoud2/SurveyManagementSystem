@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>0a79c192-e8e5-4e8e-bc84-d31a43b2008c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
     <PackageReference Include="Mapster" Version="7.4.1-pre01" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.2-pre01" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-rc.2.24474.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-rc.2.24474.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-rc.2.24474.1" />

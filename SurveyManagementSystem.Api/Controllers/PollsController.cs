@@ -1,22 +1,18 @@
-﻿using SurveyBasket.Abstractions;
-using SurveyManagementSystem.Api.Abstractions.ResultPattern;
-using SurveyManagementSystem.Api.Contracts.Polls;
-using SurveyManagementSystem.Api.Services;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace SurveyManagementSystem.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class PollsController : ControllerBase
 {
 
-    //Make the db when add start from last id
-    //make the error messges
-    //fix get curnt in DateTime/only
     private readonly IPollService _pollService;
 
     public PollsController(IPollService pollService) => _pollService = pollService;
 
+    [Authorize]
     [HttpGet("")]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         => Ok(await _pollService.GetAllAsync());

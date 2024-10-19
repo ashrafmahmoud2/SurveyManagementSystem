@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
-using SurveyManagementSystem.Api.Entitles;
-using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using SurveyManagementSystem.Api.Entities;
-
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) :
+﻿public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) :
     IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
@@ -25,6 +18,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         foreach (var fk in cascadeFKs)
             fk.DeleteBehavior = DeleteBehavior.Restrict;
 
+       
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -34,8 +29,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         foreach (var entityEntry in entries)
         {
-           // var currentUserId = _httpContextAccessor.HttpContext?.User.GetUserId()!;
-            var currentUserId = "1";
+            var currentUserId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+               // _httpContextAccessor.HttpContext?.User.GetUserId()!;
+           //var currentUserId = "1";
 
             if (entityEntry.State == EntityState.Added)
             {

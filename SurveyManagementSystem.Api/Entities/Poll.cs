@@ -17,4 +17,6 @@ public class Poll: AuditableEntity
     public bool IsPublished { get; set; }
 
 
+
+
 }

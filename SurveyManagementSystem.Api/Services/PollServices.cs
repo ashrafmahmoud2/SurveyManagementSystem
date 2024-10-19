@@ -1,15 +1,4 @@
-﻿using Azure.Core;
-using Mapster;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using SurveyBasket.Abstractions;
-using SurveyManagementSystem.Api.Abstractions.ResultPattern;
-using SurveyManagementSystem.Api.Contracts.Polls;
-using SurveyManagementSystem.Api.Entitles;
-using SurveyManagementSystem.Api.Errors;
-using System.Threading;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public class PollService : IPollService
 {

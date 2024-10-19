@@ -10,6 +10,12 @@ public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
         // builder.HasIndex(x => new { x.QuestionId, x.Content }).IsUnique();
 
+        builder
+            .OwnsMany(x => x.RefreshTokens)
+            .ToTable("RefreshToken")
+            .WithOwner()
+            .HasForeignKey("UserId");
+
         builder.Property(x => x.FirstName).HasMaxLength(100);
         builder.Property(x => x.LastName).HasMaxLength(100);
 

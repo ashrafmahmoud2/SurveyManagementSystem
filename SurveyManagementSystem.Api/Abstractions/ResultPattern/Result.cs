@@ -3,6 +3,7 @@
 namespace SurveyBasket.Abstractions;
 public class Result
 {
+    //Error Handling by result pattern
     public Result(bool isSuccess, Error error)
     {
         if ((isSuccess && error != Error.None) || (!isSuccess && error == Error.None))
@@ -30,6 +31,7 @@ public class Result
     {
         return new(value, true, Error.None);
     }
+   
     public static Result<TValue> Failure<TValue>(Error error)
     {
         return new(default, false, error);

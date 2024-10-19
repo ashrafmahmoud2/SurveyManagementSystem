@@ -2,9 +2,14 @@
 using FluentValidation.AspNetCore;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SurveyManagementSystem.Api.Authentication;
+using SurveyManagementSystem.Api.Authentication.OptionsPattern;
 using SurveyManagementSystem.Api.Services;
 using System.Reflection;
 using System.Text;
@@ -23,10 +28,20 @@ public static class DependencyInjection
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
 
+        
+        services.AddCors(options =>
+          options.AddDefaultPolicy(builder =>
+              builder
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .WithOrigins(configuration.GetSection("AllowedOrigins").Get<string[]>()!)//AllowedOrigins is array in appsettings
+          )
+      );
+
         // Register IHttpContextAccessor
         services.AddHttpContextAccessor();
 
-        // services.AddAuthConfig(configuration);
+         services.AddAuthConfig(configuration);
 
         var connectionString = configuration.GetConnectionString("DefaultConnection") ??
             throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -40,8 +55,10 @@ public static class DependencyInjection
             .AddFluentValidationConfig();
 
        services.AddScoped<IPollService, PollService>();
-       
+       services.AddScoped<IAuthServices, AuthServices>();
 
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
       
         return services;
     }
@@ -61,6 +78,55 @@ public static class DependencyInjection
         services
             .AddFluentValidationAutoValidation()
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        return services;
+    }
+
+    private static IServiceCollection AddAuthConfig(this IServiceCollection services,
+       IConfiguration configuration)
+    {
+        services.AddIdentity<ApplicationUser, ApplicationRole>()
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
+
+        //services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        //services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+
+        services.AddSingleton<IJwtProvider, JwtProvider>();
+
+        services.AddOptions<JwtOptions>()
+            .BindConfiguration(JwtOptions.SectionName)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        var jwtSettings = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(o =>
+        {
+            o.SaveToken = true;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings?.Key!)),
+                ValidIssuer = jwtSettings?.Issuer,
+                ValidAudience = jwtSettings?.Audience
+            };
+        });
+
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequiredLength = 8;
+            options.SignIn.RequireConfirmedEmail = true;
+            options.User.RequireUniqueEmail = true;
+        });
 
         return services;
     }

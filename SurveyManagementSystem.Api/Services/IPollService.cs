@@ -1,8 +1,4 @@
-﻿using SurveyBasket.Abstractions;
-using SurveyManagementSystem.Api.Abstractions.ResultPattern;
-using SurveyManagementSystem.Api.Contracts.Polls;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public interface IPollService
 {
