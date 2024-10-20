@@ -48,9 +48,9 @@
 
 
 //--pollsTable
-//INSERT INTO [dbo].[Polls] 
-//    ([Title], [Summary], [StartAt], [EndAt], [CreatedById], [CreatedOn], [UpdatedById], [UpdatedOn])
-//VALUES 
+//INSERT INTO[dbo].[Polls]
+//([Title], [Summary], [StartAt], [EndAt], [CreatedById], [CreatedOn], [UpdatedById], [UpdatedOn])
+//VALUES
 //    ('Favorite Programming Language', 'Vote for your favorite programming language', '2024-01-01 10:00:00', '2024-01-10 23:59:59', '1', '2024-01-01 09:00:00', NULL, NULL),
 
 //    ('Best Mobile OS', 'Choose the best mobile operating system', '2024-02-01 10:00:00', '2024-02-05 23:59:59', '2', '2024-02-01 09:00:00', NULL, NULL),
@@ -70,3 +70,101 @@
 //    ('Best Laptop Brand', 'Vote for the best laptop brand in 2024', '2024-09-01 10:00:00', '2024-09-07 23:59:59', '3', '2024-09-01 09:00:00', NULL, NULL),
 
 //    ('Favorite Game Console', 'Which game console do you prefer the most?', '2024-10-01 10:00:00', '2024-10-07 23:59:59', '4', '2024-10-01 09:00:00', NULL, NULL);
+
+
+
+//--QuestionTable
+//    USE [SurveyManagementSystem]
+//GO
+
+//-- Poll 1: Favorite Programming Language (1 Question)
+//INSERT INTO [dbo].[Questions] 
+//    ([Content], [PollId], [IsActive], [CreatedById], [CreatedOn], [UpdatedById], [UpdatedOn])
+//VALUES
+//    ('What is your favorite programming language?', 1, 1, '1', '2024-01-01 09:00:00', NULL, NULL),
+
+//-- Poll 2: Best Mobile OS (3 Questions)
+//    ('Which mobile OS do you think is the best?', 2, 1, '2', '2024-02-01 09:00:00', NULL, NULL),
+//    ('What feature do you value most in a mobile OS?', 2, 1, '2', '2024-02-01 09:00:00', NULL, NULL),
+//    ('Which mobile OS has the best app ecosystem?', 2, 1, '2', '2024-02-01 09:00:00', NULL, NULL),
+
+//-- Poll 3: Preferred Coding Editor (1 Question)
+//    ('Which code editor do you prefer the most?', 3, 1, '3', '2024-03-01 09:00:00', NULL, NULL),
+
+//-- Poll 4: Favorite Social Media Platform (3 Questions)
+//    ('Which social media platform do you use the most?', 4, 1, '4', '2024-04-01 09:00:00', NULL, NULL),
+//    ('What feature do you like most on your preferred platform?', 4, 1, '4', '2024-04-01 09:00:00', NULL, NULL),
+//    ('How often do you use your favorite social media platform?', 4, 1, '4', '2024-04-01 09:00:00', NULL, NULL),
+
+//-- Poll 5: Best Cloud Provider (1 Question)
+//    ('Which cloud provider do you consider the best?', 5, 1, '5', '2024-05-01 09:00:00', NULL, NULL),
+
+//-- Poll 6: Preferred Database System (3 Questions)
+//    ('Which is your preferred database management system?', 6, 1, '6', '2024-06-01 09:00:00', NULL, NULL),
+//    ('What makes your chosen database system preferable?', 6, 1, '6', '2024-06-01 09:00:00', NULL, NULL),
+//    ('Which database system offers the best performance for your needs?', 6, 1, '6', '2024-06-01 09:00:00', NULL, NULL),
+
+//-- Poll 7: Best Streaming Service (1 Question)
+//    ('Which video streaming service do you prefer?', 7, 1, '1', '2024-07-01 09:00:00', NULL, NULL),
+
+//-- Poll 8: Favorite Web Framework (3 Questions)
+//    ('What is your favorite web development framework?', 8, 1, '2', '2024-08-01 09:00:00', NULL, NULL),
+//    ('Why do you prefer your chosen web framework?', 8, 1, '2', '2024-08-01 09:00:00', NULL, NULL),
+//    ('Which web framework do you think is the most scalable?', 8, 1, '2', '2024-08-01 09:00:00', NULL, NULL),
+
+//-- Poll 9: Best Laptop Brand (1 Question)
+//    ('Which laptop brand do you think is the best?', 9, 1, '3', '2024-09-01 09:00:00', NULL, NULL),
+
+//-- Poll 10: Favorite Game Console (3 Questions)
+//    ('Which game console do you prefer?', 10, 1, '4', '2024-10-01 09:00:00', NULL, NULL),
+//    ('What do you like most about your favorite game console?', 10, 1, '4', '2024-10-01 09:00:00', NULL, NULL),
+//    ('Which game console has the best exclusive games?', 10, 1, '4', '2024-10-01 09:00:00', NULL, NULL);
+
+//GO
+//USE [SurveyManagementSystem]
+//GO
+
+//-- Poll 1: Favorite Programming Language (1 Question)
+//INSERT INTO [dbo].[Questions] 
+//    ([Content], [PollId], [IsActive], [CreatedById], [CreatedOn], [UpdatedById], [UpdatedOn])
+//VALUES
+//    ('What is your favorite programming language?', 1, 1, '1', '2024-01-01 09:00:00', NULL, NULL),
+
+//-- Poll 2: Best Mobile OS (3 Questions)
+//    ('Which mobile OS do you think is the best?', 2, 1, '2', '2024-02-01 09:00:00', NULL, NULL),
+//    ('What feature do you value most in a mobile OS?', 2, 1, '2', '2024-02-01 09:00:00', NULL, NULL),
+//    ('Which mobile OS has the best app ecosystem?', 2, 1, '2', '2024-02-01 09:00:00', NULL, NULL),
+
+//-- Poll 3: Preferred Coding Editor (1 Question)
+//    ('Which code editor do you prefer the most?', 3, 1, '3', '2024-03-01 09:00:00', NULL, NULL),
+
+//-- Poll 4: Favorite Social Media Platform (3 Questions)
+//    ('Which social media platform do you use the most?', 4, 1, '4', '2024-04-01 09:00:00', NULL, NULL),
+//    ('What feature do you like most on your preferred platform?', 4, 1, '4', '2024-04-01 09:00:00', NULL, NULL),
+//    ('How often do you use your favorite social media platform?', 4, 1, '4', '2024-04-01 09:00:00', NULL, NULL),
+
+//-- Poll 5: Best Cloud Provider (1 Question)
+//    ('Which cloud provider do you consider the best?', 5, 1, '5', '2024-05-01 09:00:00', NULL, NULL),
+
+//-- Poll 6: Preferred Database System (3 Questions)
+//    ('Which is your preferred database management system?', 6, 1, '6', '2024-06-01 09:00:00', NULL, NULL),
+//    ('What makes your chosen database system preferable?', 6, 1, '6', '2024-06-01 09:00:00', NULL, NULL),
+//    ('Which database system offers the best performance for your needs?', 6, 1, '6', '2024-06-01 09:00:00', NULL, NULL),
+
+//-- Poll 7: Best Streaming Service (1 Question)
+//    ('Which video streaming service do you prefer?', 7, 1, '1', '2024-07-01 09:00:00', NULL, NULL),
+
+//-- Poll 8: Favorite Web Framework (3 Questions)
+//    ('What is your favorite web development framework?', 8, 1, '2', '2024-08-01 09:00:00', NULL, NULL),
+//    ('Why do you prefer your chosen web framework?', 8, 1, '2', '2024-08-01 09:00:00', NULL, NULL),
+//    ('Which web framework do you think is the most scalable?', 8, 1, '2', '2024-08-01 09:00:00', NULL, NULL),
+
+//-- Poll 9: Best Laptop Brand (1 Question)
+//    ('Which laptop brand do you think is the best?', 9, 1, '3', '2024-09-01 09:00:00', NULL, NULL),
+
+//-- Poll 10: Favorite Game Console (3 Questions)
+//    ('Which game console do you prefer?', 10, 1, '4', '2024-10-01 09:00:00', NULL, NULL),
+//    ('What do you like most about your favorite game console?', 10, 1, '4', '2024-10-01 09:00:00', NULL, NULL),
+//    ('Which game console has the best exclusive games?', 10, 1, '4', '2024-10-01 09:00:00', NULL, NULL);
+
+//GO

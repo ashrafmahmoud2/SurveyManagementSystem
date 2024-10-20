@@ -16,7 +16,9 @@ BUT IN OBSDAIN
 
 
 Need to review
- [Owned] in RefreshToken class
+ [Owned] in RefreshToken class 
+ public Poll Poll { get; set; } = default!; what is  default!
+ the deffresces bettwen Projection and adabt<>();
 
 
 

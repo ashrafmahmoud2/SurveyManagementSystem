@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SurveyManagementSystem.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241019174623_addQuestionTable")]
+    partial class addQuestionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,33 +163,6 @@ namespace SurveyManagementSystem.Api.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SurveyManagementSystem.Api.Entities.Answer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId", "Content")
-                        .IsUnique();
-
-                    b.ToTable("Answers");
-                });
-
             modelBuilder.Entity("SurveyManagementSystem.Api.Entities.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -221,12 +197,14 @@ namespace SurveyManagementSystem.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Content")
+                        .IsUnique();
+
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("UpdatedById");
+                    b.HasIndex("PollId");
 
-                    b.HasIndex("PollId", "Content")
-                        .IsUnique();
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Questions");
                 });
@@ -412,17 +390,6 @@ namespace SurveyManagementSystem.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SurveyManagementSystem.Api.Entities.Answer", b =>
-                {
-                    b.HasOne("SurveyManagementSystem.Api.Entities.Question", "Question")
-                        .WithMany("Answers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("SurveyManagementSystem.Api.Entities.Question", b =>
                 {
                     b.HasOne("SurveyManagementSystem.Api.Entitles.ApplicationUser", "CreatedBy")
@@ -432,7 +399,7 @@ namespace SurveyManagementSystem.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("SurveyManagementSystem.Api.Entitles.Poll", "Poll")
-                        .WithMany("Questions")
+                        .WithMany()
                         .HasForeignKey("PollId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -500,16 +467,6 @@ namespace SurveyManagementSystem.Api.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("UpdatedBy");
-                });
-
-            modelBuilder.Entity("SurveyManagementSystem.Api.Entities.Question", b =>
-                {
-                    b.Navigation("Answers");
-                });
-
-            modelBuilder.Entity("SurveyManagementSystem.Api.Entitles.Poll", b =>
-                {
-                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }

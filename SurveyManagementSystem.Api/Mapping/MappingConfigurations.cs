@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity.Data;
+using SurveyManagementSystem.Api.Contracts.Question;
 using SurveyManagementSystem.Api.Entitles;
 
 namespace SurveyManagementSystem.Api.Mapping;
@@ -13,6 +14,10 @@ public class MappingConfigurations : IRegister
 
         //config.NewConfig<RegisterRequest, ApplicationUser>()
         //    .Map(dest => dest.UserName, src => src.Email);
+
+
+        config.NewConfig<QuestionRequest, Question>()
+            .Map(dest => dest.Answers, src => src.Answers.Select(answer => new Answer { Content = answer }));
 
 
     }
