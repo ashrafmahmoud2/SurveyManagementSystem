@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SurveyManagementSystem.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241021114028_AddVoteAndVoteAnswerTables")]
+    partial class AddVoteAndVoteAnswerTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,10 +254,9 @@ namespace SurveyManagementSystem.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PollId");
 
-                    b.HasIndex("PollId", "UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Votes");
                 });
@@ -282,8 +284,7 @@ namespace SurveyManagementSystem.Api.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.HasIndex("VoteId", "QuestionId")
-                        .IsUnique();
+                    b.HasIndex("VoteId");
 
                     b.ToTable("VoteAnswers");
                 });

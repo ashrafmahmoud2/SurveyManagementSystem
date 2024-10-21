@@ -18,3 +18,4 @@ public class PollConfiguration : IEntityTypeConfiguration<Poll>
              .HasMaxLength(1000);
     }
 }
+

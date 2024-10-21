@@ -11,5 +11,10 @@
             "Vote.DuplicatedVote",
             "Another vote with the same details exists",
             StatusCodes.Status409Conflict);
+
+        public static readonly Error InvalidQuestion = new(
+           "Vote.InvalidQuestion",
+           "Invalid Question",
+           StatusCodes.Status409Conflict);
     }
 }

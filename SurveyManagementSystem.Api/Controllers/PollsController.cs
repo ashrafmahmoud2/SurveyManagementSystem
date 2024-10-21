@@ -31,8 +31,7 @@ public class PollsController : ControllerBase
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> Add([FromBody] PollRequest request,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> Add([FromBody] PollRequest request,CancellationToken cancellationToken)
     {
         var result = await _pollService.AddAsync(request, cancellationToken);
 
