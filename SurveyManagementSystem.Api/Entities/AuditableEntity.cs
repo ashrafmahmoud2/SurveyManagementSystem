@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Entitles;
-
-namespace SurveyManagementSystem.Api.Entities;
+﻿namespace SurveyManagementSystem.Api.Entities;
 
 public class AuditableEntity
 {

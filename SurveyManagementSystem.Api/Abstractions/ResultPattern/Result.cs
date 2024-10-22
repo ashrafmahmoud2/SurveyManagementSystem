@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.ResultPattern;
-
-namespace SurveyBasket.Abstractions;
+﻿namespace SurveyBasket.Abstractions;
 public class Result
 {
     //Error Handling by result pattern
@@ -31,7 +29,7 @@ public class Result
     {
         return new(value, true, Error.None);
     }
-   
+
     public static Result<TValue> Failure<TValue>(Error error)
     {
         return new(default, false, error);

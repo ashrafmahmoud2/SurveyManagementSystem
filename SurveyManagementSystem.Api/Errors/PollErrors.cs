@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.ResultPattern;
-
-namespace SurveyManagementSystem.Api.Errors
+﻿namespace SurveyManagementSystem.Api.Errors
 {
     public static class PollErrors
     {

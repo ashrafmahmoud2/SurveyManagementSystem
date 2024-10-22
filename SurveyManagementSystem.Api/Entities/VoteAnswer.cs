@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-
-namespace SurveyManagementSystem.Api.Entities;
+﻿namespace SurveyManagementSystem.Api.Entities;
 
 public sealed class VoteAnswer
 {

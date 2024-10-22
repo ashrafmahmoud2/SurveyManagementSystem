@@ -1,6 +1,6 @@
 ﻿namespace SurveyManagementSystem.Api.Contracts.Vote;
 
-public class VoteRequestValidator: AbstractValidator<VoteRequest>
+public class VoteRequestValidator : AbstractValidator<VoteRequest>
 {
     public VoteRequestValidator()
     {

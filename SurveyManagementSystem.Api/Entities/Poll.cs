@@ -1,14 +1,12 @@
-﻿using SurveyManagementSystem.Api.Entities;
+﻿namespace SurveyManagementSystem.Api.Entitles;
 
-namespace SurveyManagementSystem.Api.Entitles;
-
-public class Poll: AuditableEntity
+public class Poll : AuditableEntity
 {
-   public int Id { get; set; }
+    public int Id { get; set; }
 
-   public string Title { get; set; }=string.Empty;
+    public string Title { get; set; } = string.Empty;
 
-    public string Summary { get; set; }=string.Empty;
+    public string Summary { get; set; } = string.Empty;
 
     public DateOnly StartsAt { get; set; }
 
@@ -17,6 +15,9 @@ public class Poll: AuditableEntity
     public bool IsPublished { get; set; }
 
     public ICollection<Question> Questions { get; set; } = [];
+    public ICollection<Vote> Votes { get; set; } = [];
+
+
 
 
 }

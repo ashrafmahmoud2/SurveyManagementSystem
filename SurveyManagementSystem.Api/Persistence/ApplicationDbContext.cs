@@ -23,7 +23,7 @@
         foreach (var fk in cascadeFKs)
             fk.DeleteBehavior = DeleteBehavior.Restrict;
 
-       
+
 
         base.OnModelCreating(modelBuilder);
     }
@@ -35,8 +35,8 @@
         foreach (var entityEntry in entries)
         {
             var currentUserId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-               // _httpContextAccessor.HttpContext?.User.GetUserId()!;
-           //var currentUserId = "1";
+            // _httpContextAccessor.HttpContext?.User.GetUserId()!;
+            //var currentUserId = "1";
 
             if (entityEntry.State == EntityState.Added)
             {

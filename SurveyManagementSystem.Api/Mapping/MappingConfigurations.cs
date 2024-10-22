@@ -1,7 +1,4 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Identity.Data;
-using SurveyManagementSystem.Api.Contracts.Question;
-using SurveyManagementSystem.Api.Entitles;
+﻿using SurveyManagementSystem.Api.Contracts.Question;
 
 namespace SurveyManagementSystem.Api.Mapping;
 

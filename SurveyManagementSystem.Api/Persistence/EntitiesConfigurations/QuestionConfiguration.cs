@@ -11,7 +11,7 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
         builder.Property(x => x.Content)
          .HasMaxLength(1000);
 
-        builder.HasIndex(x => new {x.PollId,x.Content}).IsUnique();
+        builder.HasIndex(x => new { x.PollId, x.Content }).IsUnique();
 
     }
 }

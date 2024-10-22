@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SurveyManagementSystem.Api.Entities;
 
 namespace SurveyManagementSystem.Api.Entitles;
 

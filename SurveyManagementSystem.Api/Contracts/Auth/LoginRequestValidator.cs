@@ -1,9 +1,8 @@
-﻿using FluentValidation;
-using SurveyManagementSystem.Api.Abstractions.Const;
+﻿using SurveyManagementSystem.Api.Abstractions.Const;
 
 namespace SurveyManagementSystem.Api.Contracts.Auth;
 
-public class LoginRequestValidator: AbstractValidator<LoginRequest>
+public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
     public LoginRequestValidator()
     {

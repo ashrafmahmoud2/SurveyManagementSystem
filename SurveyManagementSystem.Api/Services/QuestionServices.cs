@@ -1,11 +1,4 @@
-﻿using Azure.Core;
-using SurveyManagementSystem.Api.Contracts.Answer;
-using SurveyManagementSystem.Api.Contracts.Auth;
-using SurveyManagementSystem.Api.Contracts.Question;
-using SurveyManagementSystem.Api.Entities;
-using SurveyManagementSystem.Api.Entitles;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SurveyManagementSystem.Api.Contracts.Question;
 
 namespace SurveyManagementSystem.Api.Services;
 

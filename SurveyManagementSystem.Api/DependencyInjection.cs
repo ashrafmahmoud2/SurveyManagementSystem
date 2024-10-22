@@ -1,19 +1,9 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using Mapster;
+﻿using FluentValidation.AspNetCore;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
-using SurveyManagementSystem.Api.Services;
-using System.Reflection;
-using System.Text;
-using System.Threading.RateLimiting;
 
 namespace SurveyBasket;
 
@@ -28,7 +18,7 @@ public static class DependencyInjection
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
 
-        
+
         services.AddCors(options =>
           options.AddDefaultPolicy(builder =>
               builder
@@ -41,7 +31,7 @@ public static class DependencyInjection
         // Register IHttpContextAccessor
         services.AddHttpContextAccessor();
 
-         services.AddAuthConfig(configuration);
+        services.AddAuthConfig(configuration);
 
         var connectionString = configuration.GetConnectionString("DefaultConnection") ??
             throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -54,14 +44,15 @@ public static class DependencyInjection
             .AddMapsterConfig()
             .AddFluentValidationConfig();
 
-       services.AddScoped<IPollService, PollService>();
-       services.AddScoped<IAuthServices, AuthServices>();
-       services.AddScoped<IQuestionServices, QuestionServices>();
-       services.AddScoped<IVoteService, VoteService>();
+        services.AddScoped<IPollService, PollService>();
+        services.AddScoped<IAuthServices, AuthServices>();
+        services.AddScoped<IQuestionServices, QuestionServices>();
+        services.AddScoped<IVoteService, VoteService>();
+        services.AddScoped<IResultService, ResultService>();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
-      
+
         return services;
     }
 

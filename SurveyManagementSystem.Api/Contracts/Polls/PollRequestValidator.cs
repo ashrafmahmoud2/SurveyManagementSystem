@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace SurveyManagementSystem.Api.Contracts.Polls;
+﻿namespace SurveyManagementSystem.Api.Contracts.Polls;
 
 public class PollRequestValidator : AbstractValidator<PollRequest>
 {
@@ -11,14 +9,14 @@ public class PollRequestValidator : AbstractValidator<PollRequest>
         RuleFor(x => x.Title)
             .NotEmpty()
             .Length(3, 10000);
-           
-          
-            
+
+
+
 
         RuleFor(x => x.Summary)
             .NotEmpty()
             .Length(3, 10000);
-        
+
 
         RuleFor(p => p.StartAt)
             .NotEmpty()

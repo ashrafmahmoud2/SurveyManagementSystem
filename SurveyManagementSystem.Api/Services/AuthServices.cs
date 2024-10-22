@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Contracts.Auth;
-using SurveyManagementSystem.Api.Entities;
 using System.Security.Cryptography;
 
 namespace SurveyManagementSystem.Api.Services;
@@ -83,7 +82,7 @@ public class AuthServices(UserManager<ApplicationUser> userManager, IJwtProvider
 
         await _userManager.UpdateAsync(user);
 
-        var response = new AuthResponse(user.Id, user.Email, user.FirstName, user.LastName,newToken, expiresIn,newRefreshToken,refreshTokenExpiration);
+        var response = new AuthResponse(user.Id, user.Email, user.FirstName, user.LastName, newToken, expiresIn, newRefreshToken, refreshTokenExpiration);
 
         return Result.Success(response);
 
@@ -101,7 +100,7 @@ public class AuthServices(UserManager<ApplicationUser> userManager, IJwtProvider
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
     }
 
-    public  async Task<Result> RevokeRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken)
+    public async Task<Result> RevokeRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken)
     {
         var userId = _jwtProvider.ValidateToken(token);
 

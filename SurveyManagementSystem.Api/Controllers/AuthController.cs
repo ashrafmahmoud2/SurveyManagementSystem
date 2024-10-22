@@ -8,9 +8,9 @@ public class AuthController(IAuthServices authServices) : ControllerBase
     private readonly IAuthServices _authServices = authServices;
 
     [HttpPost("")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request,CancellationToken cancellationToken)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
-      var result=await _authServices.GetTokenAsync(request.Email, request.Password,cancellationToken);
+        var result = await _authServices.GetTokenAsync(request.Email, request.Password, cancellationToken);
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
@@ -21,7 +21,7 @@ public class AuthController(IAuthServices authServices) : ControllerBase
     {
         var result = await _authServices.GetRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : result.ToProblem(); 
+        return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
     [HttpPost("revoke-refresh-token")]

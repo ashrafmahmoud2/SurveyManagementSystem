@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SurveyManagementSystem.Api.Contracts.Question;
+﻿using SurveyManagementSystem.Api.Contracts.Question;
 
 namespace SurveyManagementSystem.Api.Controllers;
 [Route("api/polls/{pollId}/[controller]")]
@@ -9,7 +6,7 @@ namespace SurveyManagementSystem.Api.Controllers;
 [Authorize]
 public class QuestionsController(IQuestionServices questionServices) : ControllerBase
 {
-    
+
     private readonly IQuestionServices _questionServices = questionServices;
 
     [HttpGet("")]
@@ -28,7 +25,7 @@ public class QuestionsController(IQuestionServices questionServices) : Controlle
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
-   
+
     [HttpPost("")]
     public async Task<IActionResult> Add([FromRoute] int pollId, [FromBody] QuestionRequest request, CancellationToken cancellationToken)
     {
@@ -37,7 +34,7 @@ public class QuestionsController(IQuestionServices questionServices) : Controlle
         return result.IsSuccess ? CreatedAtAction(nameof(Get), new { pollId, result.Value.QuestionId }, result.Value) : result.ToProblem();
     }
 
-   
+
     [HttpPut("{questionId}")]
     public async Task<IActionResult> Update([FromRoute] int pollId, [FromRoute] int questionId, [FromBody] QuestionRequest request, CancellationToken cancellationToken)
     {
@@ -47,7 +44,7 @@ public class QuestionsController(IQuestionServices questionServices) : Controlle
         return result.IsSuccess ? CreatedAtAction(nameof(Get), new { pollId, result.Value.QuestionId }, result.Value) : result.ToProblem();
     }
 
-  
+
     [HttpPut("toggle-status/{questionId}")]
     public async Task<IActionResult> ToggleStatus([FromRoute] int pollId, [FromRoute] int questionId, CancellationToken cancellationToken)
     {

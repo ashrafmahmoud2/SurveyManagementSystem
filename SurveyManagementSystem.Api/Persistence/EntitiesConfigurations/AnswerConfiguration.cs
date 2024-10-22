@@ -10,7 +10,7 @@ public class AnswerConfiguration : IEntityTypeConfiguration<Answer>
         builder.Property(x => x.Content)
          .HasMaxLength(1000);
 
-        builder.HasIndex(x => new {x.QuestionId,x.Content}).IsUnique();
+        builder.HasIndex(x => new { x.QuestionId, x.Content }).IsUnique();
 
     }
 }

@@ -1,7 +1,4 @@
-﻿using SurveyBasket.Abstractions;
-using System.Reflection;
-
-namespace SurveyManagementSystem.Api.Abstractions.ResultPattern;
+﻿namespace SurveyManagementSystem.Api.Abstractions.ResultPattern;
 
 public static class ResultExtensions
 {
@@ -10,7 +7,7 @@ public static class ResultExtensions
         if (result.IsSuccess)
             throw new InvalidOperationException("cannot convert success result to problem");
 
-        var problem=Results.Problem(statusCode:result.Error.StatusCode);
+        var problem = Results.Problem(statusCode: result.Error.StatusCode);
         var problemDetails = problem.GetType().GetProperty(nameof(ProblemDetails))!.GetValue(problem) as ProblemDetails;
 
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SurveyManagementSystem.Api.Entitles;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace SurveyManagementSystem.Api.Persistence.EntitiesConfigurations;
 

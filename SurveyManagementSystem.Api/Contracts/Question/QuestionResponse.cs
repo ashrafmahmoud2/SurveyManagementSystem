@@ -9,7 +9,7 @@ public record QuestionResponse
     int QuestionId,
     string Content,
     IEnumerable<AnswerResponse> Answers
-   
+
 );
 
 
