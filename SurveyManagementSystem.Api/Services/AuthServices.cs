@@ -124,4 +124,10 @@ public class AuthServices(UserManager<ApplicationUser> userManager, IJwtProvider
 
         return Result.Success();
     }
+
+    public async Task<Result> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
+    {
+        //STOP IN MAEKE RegisterAsync;
+        return Result.Success();
+    }
 }

@@ -27,10 +27,20 @@ public class AuthController(IAuthServices authServices,ILogger<AuthController> l
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
+  
     [HttpPost("revoke-refresh-token")]
     public async Task<IActionResult> RevokeRefreshToken([FromBody] RefreshTokenRequest request, CancellationToken cancellationToken)
     {
         var result = await _authServices.RevokeRefreshTokenAsync(request.Token, request.RefreshToken, cancellationToken);
+
+        return result.IsSuccess ? Ok() : result.ToProblem();
+    }
+
+
+    [HttpPost("register")]
+    public async Task<IActionResult> register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
+    {
+        var result = await _authServices.RegisterAsync(request, cancellationToken);
 
         return result.IsSuccess ? Ok() : result.ToProblem();
     }

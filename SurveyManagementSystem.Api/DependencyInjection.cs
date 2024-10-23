@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
 
+
 namespace SurveyBasket;
 
 public static class DependencyInjection
@@ -18,6 +19,14 @@ public static class DependencyInjection
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
 
+#pragma warning disable // Suppressing all warnings temporarily
+        services.AddHybridCache();
+#pragma warning restore // Re-enabling warnings
+
+
+
+
+        //services.AddHybridCache();
 
         services.AddCors(options =>
           options.AddDefaultPolicy(builder =>

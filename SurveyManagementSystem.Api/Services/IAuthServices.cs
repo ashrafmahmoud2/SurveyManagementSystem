@@ -8,5 +8,6 @@ public interface IAuthServices
 
     Task<Result<AuthResponse>> GetRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken);
     Task<Result> RevokeRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken);
+    Task<Result> RegisterAsync(RegisterRequest request , CancellationToken cancellationToken);
 
 }
