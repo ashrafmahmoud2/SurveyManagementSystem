@@ -1,4 +1,4 @@
-﻿namespace SurveyBasket.Abstractions;
+﻿namespace SurveyManagementSystem.Abstractions;
 public class Result
 {
     //Error Handling by result pattern

@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
+using SurveyManagementSystem.Api.Contracts.Email;
 
 
-namespace SurveyBasket;
+namespace SurveyManagementSystem;
 
 public static class DependencyInjection
 {
@@ -25,7 +26,7 @@ public static class DependencyInjection
 
 
 
-
+        
         //services.AddHybridCache();
 
         services.AddCors(options =>
@@ -54,13 +55,19 @@ public static class DependencyInjection
             .AddFluentValidationConfig();
 
         services.AddScoped<IPollService, PollService>();
-        services.AddScoped<IAuthServices, AuthServices>();
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestionServices, QuestionServices>();
         services.AddScoped<IVoteService, VoteService>();
         services.AddScoped<IResultService, ResultService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
+
+
+        // Configure Email Service
+        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+
 
         return services;
     }
@@ -128,11 +135,11 @@ public static class DependencyInjection
             options.Password.RequiredLength = 8;
             options.SignIn.RequireConfirmedEmail = true;
             options.User.RequireUniqueEmail = true;
+
+
         });
 
         return services;
     }
-
-
 
 }

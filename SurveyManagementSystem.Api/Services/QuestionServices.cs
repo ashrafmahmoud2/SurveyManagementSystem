@@ -132,7 +132,7 @@ public class QuestionServices(ApplicationDbContext context,HybridCache hybridCac
             cancellationToken);
 
         if (QuestionExists)
-            return Result.Failure<QuestionResponse>(QuestionErrors.DuplicatedQuestion);
+            return Result.Failure<QuestionResponse>(QuestionErrors.DuplicatedQuestionContent);
 
 
         var question = await _context.Questions
@@ -171,7 +171,7 @@ public class QuestionServices(ApplicationDbContext context,HybridCache hybridCac
 
     public async Task<Result> ToggleStatusAsync(int pollId, int questionId, CancellationToken cancellationToken = default)
     {
-        var question = await _context.Questions.SingleOrDefaultAsync(x => x.PollId == pollId && x.Id == id, cancellationToken);
+        var question = await _context.Questions.SingleOrDefaultAsync(x => x.PollId == pollId && x.Id == questionId, cancellationToken);
 
         if (question is null)
             return Result.Failure(QuestionErrors.QuestionNotFound);
