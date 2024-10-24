@@ -4,6 +4,7 @@
 [ApiController]
 public class AuthController(IAuthService authService, ILogger<AuthController> logger) : ControllerBase
 {
+    //stop in 20/8
     private readonly IAuthService _authService = authService;
     private readonly ILogger<AuthController> _logger = logger;
 
