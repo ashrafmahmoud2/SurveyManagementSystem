@@ -3,41 +3,36 @@ using Mailjet.Client;
 using Mailjet.Client.Resources;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
+using SurveyManagementSystem.Api.Settings;
 using System.Threading.Tasks;
-
 public class EmailService : IEmailService
 {
-    //usenig https://app.mailjet.com/account/apikeys;
-    private readonly IConfiguration _configuration;
+    // Using in email Api https://app.mailjet.com/account/apikeys
 
-    public EmailService(IConfiguration configuration)
+    private readonly EmailSettings _emailSettings;
+
+    public EmailService(IOptions<EmailSettings> options)
     {
-        _configuration = configuration;
+        _emailSettings = options.Value;
     }
 
     public async Task SendEmailAsync(string toEmail, string subject, string body)
     {
-        var apiKey = _configuration["Mailjet:ApiKey"];
-        var apiSecret = _configuration["Mailjet:SecretKey"];
-        var senderEmail = _configuration["Mailjet:SenderEmail"];
-        var senderName = _configuration["Mailjet:SenderName"];
+        var client = new MailjetClient(_emailSettings.ApiKey, _emailSettings.SecretKey);
 
-        MailjetClient client = new MailjetClient(apiKey, apiSecret);
-        MailjetRequest request = new MailjetRequest
+        var request = new MailjetRequest
         {
             Resource = Send.Resource,
         }
-        .Property(Send.FromEmail, senderEmail)
-        .Property(Send.FromName, senderName)
+        .Property(Send.FromEmail, _emailSettings.SenderEmail)
+        .Property(Send.FromName, _emailSettings.SenderName)
         .Property(Send.Subject, subject)
         .Property(Send.HtmlPart, body)
         .Property(Send.Recipients, new JArray {
-                new JObject {
-                    {"Email", toEmail}
-                }
+            new JObject { { "Email", toEmail } }
         });
 
-        MailjetResponse response = await client.PostAsync(request);
+        var response = await client.PostAsync(request);
 
         if (response.IsSuccessStatusCode)
         {

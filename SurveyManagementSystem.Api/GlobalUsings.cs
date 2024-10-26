@@ -14,6 +14,8 @@ global using System.Linq;
 global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
+global using Microsoft.AspNetCore.Identity;
+
 
 // Project-specific using directives
 global using SurveyManagementSystem.Abstractions;
@@ -27,3 +29,4 @@ global using SurveyManagementSystem.Api.Errors;
 global using SurveyManagementSystem.Api.Extensions;
 global using SurveyManagementSystem.Api.Services;
 global using SurveyManagementSystem.Api.Contracts.Auth;
+global using SurveyManagementSystem.Api.Helpers;
