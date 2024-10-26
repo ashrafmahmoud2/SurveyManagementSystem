@@ -1,10 +1,13 @@
-﻿namespace SurveyManagementSystem.Api.Services;
+﻿using Hangfire;
 
-public class PollService : IPollService
+namespace SurveyManagementSystem.Api.Services;
+
+public class PollService(INotificationService notificationService, ApplicationDbContext context) : IPollService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _context=context;
+    private readonly INotificationService _notificationService = notificationService;
 
-    public PollService(ApplicationDbContext context) => _context = context;
+    //public PollService() => _context = context;
 
     public async Task<IEnumerable<PollResponse>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await _context.Polls.AsNoTracking().ProjectToType<PollResponse>().ToListAsync(cancellationToken);
@@ -69,8 +72,10 @@ public class PollService : IPollService
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        //TODO
-        //Send email when it be published
+
+        if (poll.IsPublished && poll.StartsAt == DateOnly.FromDateTime(DateTime.UtcNow))
+            BackgroundJob.Enqueue(() => _notificationService.SendNewPollsNotification(poll.Id));
+
 
         return Result.Success();
 

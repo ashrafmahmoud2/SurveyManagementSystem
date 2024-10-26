@@ -1,73 +1,71 @@
 ﻿using FluentValidation.AspNetCore;
+using Hangfire;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
-using SurveyManagementSystem.Api.Contracts.Email;
-
+using SurveyManagementSystem.Api.Settings;
 
 namespace SurveyManagementSystem;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddDependencies(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         // Add services to the container.
-
         services.AddControllers();
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         services.AddOpenApi();
 
-#pragma warning disable // Suppressing all warnings temporarily
+        // Suppressing warnings temporarily
+#pragma warning disable
         services.AddHybridCache();
-#pragma warning restore // Re-enabling warnings
-
-
-
-        
-        //services.AddHybridCache();
+#pragma warning restore
 
         services.AddCors(options =>
-          options.AddDefaultPolicy(builder =>
-              builder
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .WithOrigins(configuration.GetSection("AllowedOrigins").Get<string[]>()!)//AllowedOrigins is array in appsettings
-          )
-      );
+            options.AddDefaultPolicy(builder =>
+                builder.AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .WithOrigins(configuration.GetSection("AllowedOrigins").Get<string[]>()!))
+        );
 
         // Register IHttpContextAccessor
         services.AddHttpContextAccessor();
 
-        services.AddAuthConfig(configuration);
-
-        var connectionString = configuration.GetConnectionString("DefaultConnection") ??
-            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
         services
-            //.AddSwaggerServices()
             .AddMapsterConfig()
             .AddFluentValidationConfig();
 
+        services.AddAuthConfig(configuration);
+        services.AddBackgroundJobsConfig(configuration);
+
+        // Register scoped services
         services.AddScoped<IPollService, PollService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IQuestionServices, QuestionServices>();
         services.AddScoped<IVoteService, VoteService>();
         services.AddScoped<IResultService, ResultService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<ITelegramBotService, TelegramBotService>();
+        services.AddScoped<INotificationService, NotificationService>();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 
-
         // Configure Email Service
-        services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+        services.AddOptions<EmailSettings>()
+            .Bind(configuration.GetSection("Mailjet"))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
 
+        // Configure Telegram Service
+        services.Configure<TelegramBotSettings>(configuration.GetSection("TelegramBot"));
 
         return services;
     }
@@ -76,7 +74,6 @@ public static class DependencyInjection
     {
         var mappingConfig = TypeAdapterConfig.GlobalSettings;
         mappingConfig.Scan(Assembly.GetExecutingAssembly());
-
         services.AddSingleton<IMapper>(new Mapper(mappingConfig));
 
         return services;
@@ -91,15 +88,11 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthConfig(this IServiceCollection services,
-       IConfiguration configuration)
+    private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddIdentity<ApplicationUser, ApplicationRole>()
-          .AddEntityFrameworkStores<ApplicationDbContext>()
-          .AddDefaultTokenProviders();
-
-        //services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
-        //services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
         services.AddSingleton<IJwtProvider, JwtProvider>();
 
@@ -135,11 +128,21 @@ public static class DependencyInjection
             options.Password.RequiredLength = 8;
             options.SignIn.RequireConfirmedEmail = true;
             options.User.RequireUniqueEmail = true;
-
-
         });
 
         return services;
     }
 
+    private static IServiceCollection AddBackgroundJobsConfig(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(configuration.GetConnectionString("HangfireConnection")));
+
+        services.AddHangfireServer();
+
+        return services;
+    }
 }

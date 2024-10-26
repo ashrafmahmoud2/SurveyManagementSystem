@@ -1,6 +1,8 @@
 using SurveyManagementSystem;
 using Serilog;
-using Serilog.Events;  
+using Serilog.Events;
+using Hangfire;
+using HangfireBasicAuthenticationFilter;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,26 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+
+app.UseHangfireDashboard("/jobs", new DashboardOptions
+{
+    Authorization =
+    [
+        new HangfireCustomBasicAuthenticationFilter
+        {
+            User = app.Configuration.GetValue<string>("HangfireSettings:Username"),
+            Pass = app.Configuration.GetValue<string>("HangfireSettings:Password")
+        }
+    ],
+    DashboardTitle = "Survey Managment Dashboard",
+});
+
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using var scope = scopeFactory.CreateScope();
+var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+
+RecurringJob.AddOrUpdate("SendNewPollsNotification", () => notificationService.SendNewPollsNotification(null), Cron.Daily);
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -28,3 +50,7 @@ app.MapControllers();
 app.UseExceptionHandler();
 
 app.Run();
+
+
+
+
