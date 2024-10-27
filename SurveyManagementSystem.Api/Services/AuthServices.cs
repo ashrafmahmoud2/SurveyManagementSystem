@@ -65,7 +65,6 @@ public class AuthService(
         return Result.Failure<AuthResponse>(error);
     }
 
-  
     public async Task<Result<AuthResponse>> GetRefreshTokenAsync(string token, string refreshToken, CancellationToken cancellationToken = default)
     {
         var userId = _jwtProvider.ValidateToken(token);

@@ -30,3 +30,6 @@ global using SurveyManagementSystem.Api.Extensions;
 global using SurveyManagementSystem.Api.Services;
 global using SurveyManagementSystem.Api.Contracts.Auth;
 global using SurveyManagementSystem.Api.Helpers;
+global using SurveyManagementSystem.Api.Contracts.Users;
+
+
