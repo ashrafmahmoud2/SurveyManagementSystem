@@ -8,6 +8,6 @@ public class ApplicationRole : IdentityRole
         Id = Guid.CreateVersion7().ToString();
     }
 
-    public bool IsDefault { get; set; }
+    public bool IsDefault { get; set; }//IsDefault it's default role give to any user with specific permission like member in our application
     public bool IsDeleted { get; set; }
 }
