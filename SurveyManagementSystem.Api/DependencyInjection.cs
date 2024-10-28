@@ -4,6 +4,7 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using SurveyManagementSystem.Api.Authentication;
+using SurveyManagementSystem.Api.Authentication.Filters;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
 using SurveyManagementSystem.Api.Settings;
 
@@ -55,6 +56,7 @@ public static class DependencyInjection
         services.AddScoped<ITelegramBotService, TelegramBotService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
@@ -94,6 +96,9 @@ public static class DependencyInjection
         services.AddIdentity<ApplicationUser, ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+        services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
         services.AddSingleton<IJwtProvider, JwtProvider>();
 

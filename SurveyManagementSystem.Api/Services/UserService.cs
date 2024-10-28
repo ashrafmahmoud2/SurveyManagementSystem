@@ -53,15 +53,15 @@ public class UserService(UserManager<ApplicationUser> userManager,
 
     public async Task<Result<UserResponse>> AddAsync(CreateUserRequest request, CancellationToken cancellationToken = default)
     {
-        var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
+        //var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
 
-        if (emailIsExists)
-            return Result.Failure<UserResponse>(UserErrors.DuplicatedEmail);
+        //if (emailIsExists)
+        //    return Result.Failure<UserResponse>(UserErrors.DuplicatedEmail);
 
-        var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
+        //var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
 
-        if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
-            return Result.Failure<UserResponse>(UserErrors.InvalidRoles);
+        //if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
+        //    return Result.Failure<UserResponse>(UserErrors.InvalidRoles);
 
         var user = request.Adapt<ApplicationUser>();
 
@@ -83,15 +83,15 @@ public class UserService(UserManager<ApplicationUser> userManager,
 
     public async Task<Result> UpdateAsync(string id, UpdateUserRequest request, CancellationToken cancellationToken = default)
     {
-        var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id, cancellationToken);
+        //var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id, cancellationToken);
 
-        if (emailIsExists)
-            return Result.Failure(UserErrors.DuplicatedEmail);
+        //if (emailIsExists)
+        //    return Result.Failure(UserErrors.DuplicatedEmail);
 
-        var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
+        //var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
 
-        if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
-            return Result.Failure(UserErrors.InvalidRoles);
+        //if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
+        //    return Result.Failure(UserErrors.InvalidRoles);
 
         if (await _userManager.FindByIdAsync(id) is not { } user)
             return Result.Failure(UserErrors.UserNotFound);

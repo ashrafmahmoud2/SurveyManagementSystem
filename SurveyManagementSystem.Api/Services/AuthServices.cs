@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.WebUtilities;
+using SurveyManagementSystem.Api.Abstractions.Const;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Helpers;
 using System.Security.Cryptography;
@@ -39,7 +40,9 @@ public class AuthService(
         if (result.Succeeded)
         {
 
-            var (token, expiresIn) = _jwtProvider.GenerateToken(user);
+            var (userRoles, userPermission) = await GetUserRolesAndPermissions(user, cancellationToken);
+
+            var (token, expiresIn) = _jwtProvider.GenerateToken(user, userRoles, userPermission);
             var refreshToken = GenerateRefreshToken();
             var refreshTokenExpiration = DateTime.UtcNow.AddDays(_refreshTokenExpiryDays);
 
@@ -90,8 +93,9 @@ public class AuthService(
 
         userRefreshToken.RevokedOn = DateTime.UtcNow;
 
+        var (userRoles, userPermission) = await GetUserRolesAndPermissions(user, cancellationToken);
 
-        var (newToken, expiresIn) = _jwtProvider.GenerateToken(user);
+        var (newToken, expiresIn) = _jwtProvider.GenerateToken(user,userRoles,userPermission);
         var newRefreshToken = GenerateRefreshToken();
         var refreshTokenExpiration = DateTime.UtcNow.AddDays(_refreshTokenExpiryDays);
 
@@ -143,7 +147,7 @@ public class AuthService(
         user.UserName = request.Email;
 
         var result = await _userManager.CreateAsync(user, request.Password);
-        
+
         if (result.Succeeded)
         {
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -184,6 +188,7 @@ public class AuthService(
 
         if (result.Succeeded)
         {
+            await _userManager.AddToRoleAsync(user, DefaultRoles.Member.Name);
             return Result.Success();
         }
 
@@ -294,7 +299,22 @@ public class AuthService(
         await Task.CompletedTask;
     }
 
+    private async Task<(IEnumerable<string> roles, IEnumerable<string> permissions)> GetUserRolesAndPermissions(ApplicationUser user, CancellationToken cancellationToken)
+    {
+        var userRoles = await _userManager.GetRolesAsync(user);
 
+
+
+        var userPermissions = await (from r in _context.Roles
+                                     join p in _context.RoleClaims
+                                     on r.Id equals p.RoleId
+                                     where userRoles.Contains(r.Name!)
+                                     select p.ClaimValue!)
+                                     .Distinct()
+                                     .ToListAsync(cancellationToken);
+
+        return (userRoles, userPermissions);
+    }
 }
 
 

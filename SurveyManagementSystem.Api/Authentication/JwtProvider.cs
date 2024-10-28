@@ -1,4 +1,5 @@
 ﻿using SurveyManagementSystem.Api.Authentication.OptionsPattern;
+using System.Text.Json;
 
 namespace SurveyManagementSystem.Api.Authentication;
 
@@ -7,7 +8,7 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
     private readonly JwtOptions _options = options.Value;
 
     
-    public (string token, int expiresIn) GenerateToken(ApplicationUser user)
+    public (string token, int expiresIn) GenerateToken(ApplicationUser user, IEnumerable<string> roles, IEnumerable<string> permissions)
     {
         Claim[] claims = new Claim[]
         {
@@ -16,8 +17,8 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
             new(JwtRegisteredClaimNames.GivenName,user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName,user.LastName),
             new(JwtRegisteredClaimNames.Jti,Guid.CreateVersion7().ToString()),
-            //new(nameof(roles),JsonSerializer.Serialize(roles),JsonClaimValueTypes.JsonArray),
-            //new(nameof(Permissions),JsonSerializer.Serialize(Permissions),JsonClaimValueTypes.JsonArray)
+            new(nameof(roles),JsonSerializer.Serialize(roles),JsonClaimValueTypes.JsonArray),
+            new(nameof(permissions),JsonSerializer.Serialize(permissions),JsonClaimValueTypes.JsonArray)
         };
 
         var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
