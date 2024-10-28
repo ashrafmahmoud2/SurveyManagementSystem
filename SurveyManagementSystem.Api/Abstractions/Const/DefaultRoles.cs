@@ -2,7 +2,7 @@
 
 public static class DefaultRoles
 {
-    //To create a user when the project opens, add default data in user configurations in RoleConfiguration.cs
+    //To create a user Data when the project opens, add default data in user configurations in RoleConfiguration.cs
 
     public partial class Admin
     {

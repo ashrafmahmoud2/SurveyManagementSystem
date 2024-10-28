@@ -1,7 +1,9 @@
-﻿namespace SurveyManagementSystem.Api.Controllers;
+﻿using SurveyManagementSystem.Api.Abstractions.Const;
+
+namespace SurveyManagementSystem.Api.Controllers;
 [Route("api/polls/{pollId}/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Roles =DefaultRoles.Member.Name)]
 public class VoteController(IVoteService voteService, IQuestionServices questionServices) : ControllerBase
 {
 

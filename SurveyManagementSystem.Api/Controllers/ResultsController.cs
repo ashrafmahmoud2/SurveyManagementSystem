@@ -1,8 +1,12 @@
-﻿namespace SurveyManagementSystem.Api.Controllers;
+﻿using SurveyManagementSystem.Api.Abstractions.Const;
+using SurveyManagementSystem.Api.Authentication.Filters;
+
+namespace SurveyManagementSystem.Api.Controllers;
 
 [Route("api/Polls/{pollId}/[controller]")]
 [ApiController]
 [Authorize]
+[HasPermission(Permissions.Results)]
 public class ResultsController(IResultService resultService) : ControllerBase
 {
     private readonly IResultService _resultService = resultService;
