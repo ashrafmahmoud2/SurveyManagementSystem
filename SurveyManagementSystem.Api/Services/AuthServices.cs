@@ -304,7 +304,6 @@ public class AuthService(
         var userRoles = await _userManager.GetRolesAsync(user);
 
 
-
         var userPermissions = await (from r in _context.Roles
                                      join p in _context.RoleClaims
                                      on r.Id equals p.RoleId

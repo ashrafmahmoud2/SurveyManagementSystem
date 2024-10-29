@@ -2,11 +2,14 @@
 using Hangfire;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
+using SurveyManagementSystem.Api.Abstractions;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.Filters;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
 using SurveyManagementSystem.Api.HealthChecks;
 using SurveyManagementSystem.Api.Settings;
+using System.Threading.RateLimiting;
 
 
 namespace SurveyManagementSystem;
@@ -21,9 +24,9 @@ public static class DependencyInjection
         services.AddOpenApi();
 
         // Suppressing warnings temporarily
-#pragma warning disable
-        services.AddHybridCache();
-#pragma warning restore
+         #pragma warning disable
+         services.AddHybridCache();
+         #pragma warning restore
 
         services.AddCors(options =>
             options.AddDefaultPolicy(builder =>
@@ -46,7 +49,10 @@ public static class DependencyInjection
             .AddFluentValidationConfig();
 
         services.AddAuthConfig(configuration);
+
         services.AddBackgroundJobsConfig(configuration);
+
+        services.AddRateLimiter();
 
         // Register scoped services
         services.AddScoped<IPollService, PollService>();
@@ -80,7 +86,7 @@ public static class DependencyInjection
 
         return services;
     }
-   
+
     private static IServiceCollection AddMapsterConfig(this IServiceCollection services)
     {
         var mappingConfig = TypeAdapterConfig.GlobalSettings;
@@ -156,6 +162,47 @@ public static class DependencyInjection
             .UseSqlServerStorage(configuration.GetConnectionString("HangfireConnection")));
 
         services.AddHangfireServer();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRateLimitingConfig(this IServiceCollection services)
+    {
+        services.AddRateLimiter(rateLimiterOptions =>
+        {
+            rateLimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+            rateLimiterOptions.AddPolicy(RateLimiters.IpLimiter, httpContext =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: httpContext.Connection.RemoteIpAddress?.ToString(),
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 2,
+                        Window = TimeSpan.FromSeconds(20)
+                    }
+            )
+            );
+
+            rateLimiterOptions.AddPolicy(RateLimiters.UserLimiter, httpContext =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey: httpContext.User.GetUserId(),
+                    factory: _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = 2,
+                        Window = TimeSpan.FromSeconds(20)
+                    }
+            )
+            );
+           
+            rateLimiterOptions.AddConcurrencyLimiter(RateLimiters.Concurrency, options =>
+            {
+                options.PermitLimit = 1000;
+                options.QueueLimit = 100;
+                options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+            });
+
+           
+        });
 
         return services;
     }

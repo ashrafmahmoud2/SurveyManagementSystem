@@ -1,5 +1,8 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
+﻿using Microsoft.AspNetCore.RateLimiting;
+using SurveyManagementSystem.Api.Abstractions;
+using SurveyManagementSystem.Api.Abstractions.Const;
 using SurveyManagementSystem.Api.Authentication.Filters;
+using System.Threading.RateLimiting;
 
 namespace SurveyManagementSystem.Api.Controllers;
 
@@ -20,6 +23,7 @@ public class PollsController : ControllerBase
 
     [HttpGet("current")]
     [Authorize(Roles = DefaultRoles.Member.Name)]
+    [EnableRateLimiting(RateLimiters.UserLimiter)]
     public async Task<IActionResult> GetCurrent(CancellationToken cancellationToken)
     {
         return Ok(await _pollService.GetCurrentAsync(cancellationToken));
