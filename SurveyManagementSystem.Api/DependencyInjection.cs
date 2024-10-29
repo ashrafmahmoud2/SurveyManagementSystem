@@ -1,4 +1,6 @@
-﻿using FluentValidation.AspNetCore;
+﻿using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using FluentValidation.AspNetCore;
 using Hangfire;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,6 +10,7 @@ using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.Filters;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
 using SurveyManagementSystem.Api.HealthChecks;
+using SurveyManagementSystem.Api.OpenApi;
 using SurveyManagementSystem.Api.Settings;
 using System.Threading.RateLimiting;
 
@@ -54,6 +57,8 @@ public static class DependencyInjection
 
         services.AddRateLimiter();
 
+        services.AddOpenApi();
+
         // Register scoped services
         services.AddScoped<IPollService, PollService>();
         services.AddScoped<IAuthService, AuthService>();
@@ -83,6 +88,40 @@ public static class DependencyInjection
         .AddSqlServer(name: "database", connectionString: connectionString!)
         .AddHangfire(options => { options.MinimumAvailableServers = 1; })
         .AddCheck<MailProviderHealthCheck>(name: "mail service");
+
+
+        //Api Versioning
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1.0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+
+            options.ApiVersionReader = new HeaderApiVersionReader("x-api-version");
+        })
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'V";
+            options.SubstituteApiVersionInUrl = true;
+        });
+
+
+        return services;
+    }
+
+    private static IServiceCollection AddOpenApiServices(this IServiceCollection services)
+    {
+        var serviceProvider = services.BuildServiceProvider();
+        var apiVersionDescriptionProvider = serviceProvider.GetRequiredService<IApiVersionDescriptionProvider>();
+
+        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+        {
+            services.AddOpenApi(description.GroupName, options =>
+            {
+                options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+                options.AddDocumentTransformer(new ApiVersioningTransformer(description));
+            });
+        }
 
         return services;
     }

@@ -1,10 +1,9 @@
 ﻿namespace SurveyManagementSystem.Api.Contracts.Polls;
 
-public record PollResponse
+public record PollResponseV2
 (int Id,
  string Title,
  string Summary,
- bool IsPublished,
  DateTime StartAt,
  DateTime EndAt
 );

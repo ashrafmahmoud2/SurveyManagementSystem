@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.RateLimiting;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.RateLimiting;
 using SurveyManagementSystem.Api.Abstractions;
 using SurveyManagementSystem.Api.Abstractions.Const;
 using SurveyManagementSystem.Api.Authentication.Filters;
@@ -6,6 +7,8 @@ using System.Threading.RateLimiting;
 
 namespace SurveyManagementSystem.Api.Controllers;
 
+[ApiVersion(1, Deprecated = true)]
+[ApiVersion(2)]
 [Route("api/[controller]")]
 [ApiController]
 public class PollsController : ControllerBase
@@ -21,12 +24,21 @@ public class PollsController : ControllerBase
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         => Ok(await _pollService.GetAllAsync());
 
+    [MapToApiVersion(1)]
     [HttpGet("current")]
     [Authorize(Roles = DefaultRoles.Member.Name)]
     [EnableRateLimiting(RateLimiters.UserLimiter)]
-    public async Task<IActionResult> GetCurrent(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetCurrentV1(CancellationToken cancellationToken)
     {
-        return Ok(await _pollService.GetCurrentAsync(cancellationToken));
+        return Ok(await _pollService.GetCurrentAsyncV1(cancellationToken));
+    }
+    [MapToApiVersion(2)]
+    [HttpGet("current")]
+    [Authorize(Roles = DefaultRoles.Member.Name)]
+    [EnableRateLimiting(RateLimiters.UserLimiter)]
+    public async Task<IActionResult> GetCurrentV2(CancellationToken cancellationToken)
+    {
+        return Ok(await _pollService.GetCurrentAsyncV2(cancellationToken));
     }
 
     [HttpGet("{id}")]
