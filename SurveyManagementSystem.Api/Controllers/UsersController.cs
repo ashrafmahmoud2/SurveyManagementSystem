@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SurveyManagementSystem.Api.Abstractions.Const;
+using SurveyManagementSystem.Api.Authentication.Filters;
 
 namespace SurveyManagementSystem.Api.Controllers;
 [Route("api/[controller]")]
@@ -22,7 +23,8 @@ public class UsersController(IUserService userService) : ControllerBase
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
-    [HttpPost("{id}")]
+    [HttpPost("")]
+    [HasPermission(Permissions.AddUsers)]
     public async Task<IActionResult> Add([FromBody] CreateUserRequest  request,CancellationToken cancellationToken)
     {
         var result = await _userService.AddAsync(request, cancellationToken);
@@ -31,6 +33,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [HasPermission(Permissions.UpdateUsers)]
     public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var result = await _userService.UpdateAsync(id, request, cancellationToken);

@@ -1,5 +1,6 @@
 ﻿using SurveyManagementSystem.Api.Abstractions.Const;
 using SurveyManagementSystem.Api.Authentication.Filters;
+using SurveyManagementSystem.Api.Contracts.Common;
 using SurveyManagementSystem.Api.Contracts.Question;
 
 namespace SurveyManagementSystem.Api.Controllers;
@@ -13,9 +14,9 @@ public class QuestionsController(IQuestionServices questionServices) : Controlle
 
     [HttpGet("")]
     [HasPermission(Permissions.GetQuestions)]
-    public async Task<IActionResult> GetAll([FromRoute] int pollId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll([FromRoute] int pollId, [FromQuery] RequestFilters filters, CancellationToken cancellationToken)
     {
-        var result = await _questionServices.GetAllAsync(pollId, cancellationToken);
+        var result = await _questionServices.GetAllAsync(pollId, filters, cancellationToken);
 
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }

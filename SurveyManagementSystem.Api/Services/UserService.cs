@@ -6,6 +6,7 @@ public class UserService(UserManager<ApplicationUser> userManager,
     IRoleService roleService,
     ApplicationDbContext context) : IUserService
 {
+    //stop 25/5
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly IRoleService _roleService = roleService;
     private readonly ApplicationDbContext _context = context;
@@ -46,23 +47,26 @@ public class UserService(UserManager<ApplicationUser> userManager,
 
         var userRoles = await _userManager.GetRolesAsync(user);
 
-        var response = (user, userRoles).Adapt<UserResponse>();
+        var response = (user, userRoles).Adapt<UserResponse>(); //we add mapping in MappingConfigurations.cs 
+                                                                //in Mapster  we can make more then one soures
+
 
         return Result.Success(response);
     }
 
     public async Task<Result<UserResponse>> AddAsync(CreateUserRequest request, CancellationToken cancellationToken = default)
     {
-        //var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
+        var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email, cancellationToken);
 
-        //if (emailIsExists)
-        //    return Result.Failure<UserResponse>(UserErrors.DuplicatedEmail);
+        if (emailIsExists)
+            return Result.Failure<UserResponse>(UserErrors.DuplicatedEmail);
 
-        //var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
+        var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
 
-        //if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
-        //    return Result.Failure<UserResponse>(UserErrors.InvalidRoles);
+        if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
+            return Result.Failure<UserResponse>(UserErrors.InvalidRoles);
 
+        //we add mapping to make userName = email and emailconfirmed =true
         var user = request.Adapt<ApplicationUser>();
 
         var result = await _userManager.CreateAsync(user, request.Password);
@@ -83,19 +87,20 @@ public class UserService(UserManager<ApplicationUser> userManager,
 
     public async Task<Result> UpdateAsync(string id, UpdateUserRequest request, CancellationToken cancellationToken = default)
     {
-        //var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id, cancellationToken);
+        var emailIsExists = await _userManager.Users.AnyAsync(x => x.Email == request.Email && x.Id != id, cancellationToken);
 
-        //if (emailIsExists)
-        //    return Result.Failure(UserErrors.DuplicatedEmail);
+        if (emailIsExists)
+            return Result.Failure(UserErrors.DuplicatedEmail);
 
-        //var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
+        var allowedRoles = await _roleService.GetAllAsync(cancellationToken: cancellationToken);
 
-        //if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
-        //    return Result.Failure(UserErrors.InvalidRoles);
+        if (request.Roles.Except(allowedRoles.Select(x => x.Name)).Any())
+            return Result.Failure(UserErrors.InvalidRoles);
 
         if (await _userManager.FindByIdAsync(id) is not { } user)
             return Result.Failure(UserErrors.UserNotFound);
 
+        //we add mapping to make userName = email mappingconfiguratons.cs
         user = request.Adapt(user);
 
         var result = await _userManager.UpdateAsync(user);
@@ -105,6 +110,9 @@ public class UserService(UserManager<ApplicationUser> userManager,
             await _context.UserRoles
                 .Where(x => x.UserId == id)
                 .ExecuteDeleteAsync(cancellationToken);
+            //ExecuteDeleteAsync :
+            //Very efficient for deleting multiple records at the database level without loading them into memory.
+            //Limitations: You cannot perform complex logic with joins or navigation properties.
 
             await _userManager.AddToRolesAsync(user, request.Roles);
 
