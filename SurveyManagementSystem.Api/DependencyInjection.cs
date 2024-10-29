@@ -2,16 +2,18 @@
 using Hangfire;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using SurveyManagementSystem.Api.Authentication;
 using SurveyManagementSystem.Api.Authentication.Filters;
 using SurveyManagementSystem.Api.Authentication.OptionsPattern;
+using SurveyManagementSystem.Api.HealthChecks;
 using SurveyManagementSystem.Api.Settings;
+
 
 namespace SurveyManagementSystem;
 
 public static class DependencyInjection
 {
+
     public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         // Add services to the container.
@@ -70,9 +72,15 @@ public static class DependencyInjection
         // Configure Telegram Service
         services.Configure<TelegramBotSettings>(configuration.GetSection("TelegramBot"));
 
+        //Health Checks
+        services.AddHealthChecks()
+        .AddSqlServer(name: "database", connectionString: connectionString!)
+        .AddHangfire(options => { options.MinimumAvailableServers = 1; })
+        .AddCheck<MailProviderHealthCheck>(name: "mail service");
+
         return services;
     }
-
+   
     private static IServiceCollection AddMapsterConfig(this IServiceCollection services)
     {
         var mappingConfig = TypeAdapterConfig.GlobalSettings;
