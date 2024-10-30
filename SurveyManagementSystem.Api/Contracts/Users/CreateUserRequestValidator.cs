@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
-
-namespace SurveyManagementSystem.Api.Contracts.Users;
+﻿namespace SurveyManagementSystem.Api.Contracts.Users;
 
 public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
 {

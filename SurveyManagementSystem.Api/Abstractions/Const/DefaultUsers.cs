@@ -3,6 +3,7 @@
 
 public static class DefaultUsers
 {
+
     public partial class Admin
     {
         //To create a user when the project opens, add default data in user configurations in UserConfiguration.cs

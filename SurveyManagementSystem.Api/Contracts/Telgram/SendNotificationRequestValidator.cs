@@ -1,6 +1,6 @@
 ﻿namespace SurveyManagementSystem.Api.Contracts.Telgram;
 
-public class SendNotificationRequestValidator:AbstractValidator<SendNotificationRequest>
+public class SendNotificationRequestValidator : AbstractValidator<SendNotificationRequest>
 {
     public SendNotificationRequestValidator()
     {

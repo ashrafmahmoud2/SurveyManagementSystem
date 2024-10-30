@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.RateLimiting;
-using SurveyManagementSystem.Api.Abstractions;
-using SurveyManagementSystem.Api.Abstractions.Const;
-
-namespace SurveyManagementSystem.Api.Controllers;
+﻿namespace SurveyManagementSystem.Api.Controllers;
 [Route("api/polls/{pollId}/[controller]")]
 [ApiController]
-[Authorize(Roles =DefaultRoles.Member.Name)]
+[Authorize(Roles = DefaultRoles.Member.Name)]
 [EnableRateLimiting(RateLimiters.Concurrency)]
 public class VoteController(IVoteService voteService, IQuestionServices questionServices) : ControllerBase
 {

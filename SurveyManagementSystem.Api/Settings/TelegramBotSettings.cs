@@ -2,9 +2,9 @@
 
 namespace SurveyManagementSystem.Api.Settings
 {
-    public  class TelegramBotSettings
+    public class TelegramBotSettings
     {
         [Required]
-        public  string Token { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
     }
 }

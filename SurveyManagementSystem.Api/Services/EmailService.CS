@@ -1,9 +1,7 @@
 ﻿namespace SurveyManagementSystem.Api.Services;
 using Mailjet.Client;
 using Mailjet.Client.Resources;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
-using SurveyManagementSystem.Api.Settings;
 using System.Threading.Tasks;
 public class EmailService : IEmailService
 {

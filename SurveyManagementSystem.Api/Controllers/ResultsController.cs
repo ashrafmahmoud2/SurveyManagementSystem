@@ -1,7 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
-using SurveyManagementSystem.Api.Authentication.Filters;
-
-namespace SurveyManagementSystem.Api.Controllers;
+﻿namespace SurveyManagementSystem.Api.Controllers;
 
 [Route("api/Polls/{pollId}/[controller]")]
 [ApiController]

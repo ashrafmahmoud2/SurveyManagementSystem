@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
-using System.Threading;
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public class UserService(UserManager<ApplicationUser> userManager,
     IRoleService roleService,

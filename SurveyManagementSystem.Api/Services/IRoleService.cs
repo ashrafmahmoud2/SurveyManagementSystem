@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Contracts.Roles;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public interface IRoleService
 {

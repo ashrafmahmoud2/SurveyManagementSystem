@@ -1,7 +1,4 @@
-﻿using SurveyManagementSystem.Api.Contracts.Auth;
-using  SurveyManagementSystem.Api.Contracts.Auth;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public interface IAuthService
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SurveyManagementSystem.Api.Contracts.Telgram;
-using SurveyManagementSystem.Api.Services;
+﻿using SurveyManagementSystem.Api.Contracts.Telgram;
 
 namespace SurveyManagementSystem.Api.Controllers
 {

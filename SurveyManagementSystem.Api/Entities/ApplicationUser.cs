@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace SurveyManagementSystem.Api.Entitles;
+﻿namespace SurveyManagementSystem.Api.Entitles;
 
 public sealed class ApplicationUser : IdentityUser
 {

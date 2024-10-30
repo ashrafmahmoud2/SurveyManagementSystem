@@ -18,7 +18,7 @@ public class AccountController(IUserService userService) : ControllerBase
     }
 
     [HttpPut("info")]
-    public async Task<IActionResult> Info([FromBody] UpdateProfileRequest request,CancellationToken cancellationToken)
+    public async Task<IActionResult> Info([FromBody] UpdateProfileRequest request, CancellationToken cancellationToken)
     {
         var result = await _userService.UpdateProfileAsync(User.GetUserId()!, request);
         return result.IsSuccess ? NoContent() : result.ToProblem();

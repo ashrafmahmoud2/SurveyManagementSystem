@@ -1,11 +1,6 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
-using SurveyManagementSystem.Api.Contracts.Roles;
-using System.Linq;
-using System.Threading;
+﻿namespace SurveyManagementSystem.Api.Services;
 
-namespace SurveyManagementSystem.Api.Services;
-
-public class RoleService(RoleManager<ApplicationRole> roleManager,ApplicationDbContext context) : IRoleService
+public class RoleService(RoleManager<ApplicationRole> roleManager, ApplicationDbContext context) : IRoleService
 {
     private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
     private readonly ApplicationDbContext _context = context;
@@ -141,5 +136,5 @@ public class RoleService(RoleManager<ApplicationRole> roleManager,ApplicationDbC
         return Result.Success();
     }
 
-   
+
 }

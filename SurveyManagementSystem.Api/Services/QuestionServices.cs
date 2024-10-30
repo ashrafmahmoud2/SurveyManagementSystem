@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Hybrid;
-using SurveyManagementSystem.Api.Abstractions;
-using SurveyManagementSystem.Api.Contracts.Common;
-using SurveyManagementSystem.Api.Contracts.Question;
 using System.Linq.Dynamic.Core;
 
 namespace SurveyManagementSystem.Api.Services;
 
-public class QuestionServices(ApplicationDbContext context,HybridCache hybridCache) : IQuestionServices
+public class QuestionServices(ApplicationDbContext context, HybridCache hybridCache) : IQuestionServices
 {
     private readonly ApplicationDbContext _context = context;
     private readonly HybridCache _hybridCache = hybridCache;

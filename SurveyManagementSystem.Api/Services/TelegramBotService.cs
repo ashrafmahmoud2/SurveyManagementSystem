@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using SurveyManagementSystem.Api.Settings;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 
 namespace SurveyManagementSystem.Api.Services
 {
@@ -9,7 +7,7 @@ namespace SurveyManagementSystem.Api.Services
         private readonly TelegramBotClient _botClient;
         private readonly ILogger<TelegramBotService> _logger;
 
-        public TelegramBotService(IOptions<TelegramBotSettings> options,ILogger<TelegramBotService> logger)
+        public TelegramBotService(IOptions<TelegramBotSettings> options, ILogger<TelegramBotService> logger)
         {
             var token = options?.Value?.Token ?? throw new ArgumentNullException(nameof(options), "Bot token is required.");
             _botClient = new TelegramBotClient(token);
@@ -26,7 +24,7 @@ namespace SurveyManagementSystem.Api.Services
             }
             catch (Exception ex)
             {
-              _logger.LogError(ex, "Failed to send message");
+                _logger.LogError(ex, "Failed to send message");
                 return false;
             }
         }

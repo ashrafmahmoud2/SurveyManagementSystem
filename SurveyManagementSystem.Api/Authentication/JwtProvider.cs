@@ -1,13 +1,10 @@
-﻿using SurveyManagementSystem.Api.Authentication.OptionsPattern;
-using System.Text.Json;
-
-namespace SurveyManagementSystem.Api.Authentication;
+﻿namespace SurveyManagementSystem.Api.Authentication;
 
 public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
 {
     private readonly JwtOptions _options = options.Value;
 
-    
+
     public (string token, int expiresIn) GenerateToken(ApplicationUser user, IEnumerable<string> roles, IEnumerable<string> permissions)
     {
         Claim[] claims = new Claim[]

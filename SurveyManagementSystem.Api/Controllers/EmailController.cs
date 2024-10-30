@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Contracts.Email;
-
-[ApiController]
+﻿[ApiController]
 [Route("[controller]")]
 public class EmailController : ControllerBase
 {
@@ -12,7 +10,7 @@ public class EmailController : ControllerBase
     }
 
     [HttpPost("send-email")]
-    public async Task<IActionResult> SendEmail([FromBody]EmailRequest request)
+    public async Task<IActionResult> SendEmail([FromBody] EmailRequest request)
     {
         await _emailService.SendEmailAsync(request.ToEmail, request.Subject, request.Body);
         return Ok("Email sent.");

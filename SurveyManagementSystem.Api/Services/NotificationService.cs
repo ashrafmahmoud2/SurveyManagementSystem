@@ -29,7 +29,7 @@ public class NotificationService(
                 .ToListAsync();
         }
 
-        var users = await _userManager.Users.ToListAsync();
+        var users = await _userManager.GetUsersInRoleAsync(DefaultRoles.Member.Name);
 
         var origin = _httpContextAccessor.HttpContext?.Request.Headers.Origin;
 

@@ -1,7 +1,4 @@
-﻿
-using SurveyManagementSystem.Api.Contracts.Answer;
-
-namespace SurveyManagementSystem.Api.Contracts.Question;
+﻿namespace SurveyManagementSystem.Api.Contracts.Question;
 
 public record QuestionResponse
 (

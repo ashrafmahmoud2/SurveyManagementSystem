@@ -1,10 +1,4 @@
-﻿using Hangfire;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.WebUtilities;
-using SurveyManagementSystem.Api.Abstractions.Const;
-using SurveyManagementSystem.Api.Authentication;
-using SurveyManagementSystem.Api.Helpers;
+﻿using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Cryptography;
 
 namespace SurveyManagementSystem.Api.Services;
@@ -95,7 +89,7 @@ public class AuthService(
 
         var (userRoles, userPermission) = await GetUserRolesAndPermissions(user, cancellationToken);
 
-        var (newToken, expiresIn) = _jwtProvider.GenerateToken(user,userRoles,userPermission);
+        var (newToken, expiresIn) = _jwtProvider.GenerateToken(user, userRoles, userPermission);
         var newRefreshToken = GenerateRefreshToken();
         var refreshTokenExpiration = DateTime.UtcNow.AddDays(_refreshTokenExpiryDays);
 

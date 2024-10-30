@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-
-public class ApplicationRole : IdentityRole
+﻿public class ApplicationRole : IdentityRole
 {
     public ApplicationRole()
     {

@@ -1,8 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions;
-using SurveyManagementSystem.Api.Contracts.Common;
-using SurveyManagementSystem.Api.Contracts.Question;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public interface IQuestionServices
 {

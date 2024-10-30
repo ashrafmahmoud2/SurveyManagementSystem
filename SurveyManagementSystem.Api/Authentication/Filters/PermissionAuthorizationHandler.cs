@@ -1,6 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
-
-namespace SurveyManagementSystem.Api.Authentication.Filters;
+﻿namespace SurveyManagementSystem.Api.Authentication.Filters;
 
 public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 {

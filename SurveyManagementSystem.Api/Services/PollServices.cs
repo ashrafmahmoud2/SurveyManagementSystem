@@ -1,11 +1,8 @@
-﻿using Hangfire;
-using SurveyManagementSystem.Api.Contracts.Polls;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public class PollService(INotificationService notificationService, ApplicationDbContext context) : IPollService
 {
-    private readonly ApplicationDbContext _context=context;
+    private readonly ApplicationDbContext _context = context;
     private readonly INotificationService _notificationService = notificationService;
 
     //public PollService() => _context = context;

@@ -1,7 +1,4 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
-using System.Text.RegularExpressions;
-
-namespace SurveyManagementSystem.Api.Contracts.Auth;
+﻿namespace SurveyManagementSystem.Api.Contracts.Auth;
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {

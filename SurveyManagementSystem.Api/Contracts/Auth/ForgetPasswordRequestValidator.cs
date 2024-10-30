@@ -1,6 +1,6 @@
 ﻿namespace SurveyManagementSystem.Api.Contracts.Auth;
 
-public class ForgetPasswordRequestValidator:AbstractValidator<ForgetPasswordRequest>
+public class ForgetPasswordRequestValidator : AbstractValidator<ForgetPasswordRequest>
 {
     public ForgetPasswordRequestValidator()
     {

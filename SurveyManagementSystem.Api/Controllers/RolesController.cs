@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SurveyManagementSystem.Api.Abstractions.Const;
-using SurveyManagementSystem.Api.Authentication.Filters;
-using SurveyManagementSystem.Api.Contracts.Roles;
-
-namespace SurveyManagementSystem.Api.Controllers;
+﻿namespace SurveyManagementSystem.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class RolesController(IRoleService roleService) : ControllerBase

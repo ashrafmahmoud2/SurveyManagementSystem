@@ -1,8 +1,6 @@
-﻿using SurveyManagementSystem.Api.Abstractions.Const;
+﻿namespace SurveyManagementSystem.Api.Contracts.Auth;
 
-namespace SurveyManagementSystem.Api.Contracts.Auth;
-
-public class ResetPasswordRequestValidator:AbstractValidator<ResetPasswordRequest>
+public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequest>
 {
     public ResetPasswordRequestValidator()
     {

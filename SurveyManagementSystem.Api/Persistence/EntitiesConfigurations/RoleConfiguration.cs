@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SurveyManagementSystem.Api.Abstractions.Const;
 
 namespace SurveyManagementSystem.Api.Persistence.EntitiesConfigurations;
 

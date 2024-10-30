@@ -1,11 +1,4 @@
-﻿using Asp.Versioning;
-using Microsoft.AspNetCore.RateLimiting;
-using SurveyManagementSystem.Api.Abstractions;
-using SurveyManagementSystem.Api.Abstractions.Const;
-using SurveyManagementSystem.Api.Authentication.Filters;
-using System.Threading.RateLimiting;
-
-namespace SurveyManagementSystem.Api.Controllers;
+﻿namespace SurveyManagementSystem.Api.Controllers;
 
 [ApiVersion(1, Deprecated = true)]
 [ApiVersion(2)]

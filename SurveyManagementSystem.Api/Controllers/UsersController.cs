@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SurveyManagementSystem.Api.Abstractions.Const;
-using SurveyManagementSystem.Api.Authentication.Filters;
-
-namespace SurveyManagementSystem.Api.Controllers;
+﻿namespace SurveyManagementSystem.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController(IUserService userService) : ControllerBase
@@ -11,7 +6,7 @@ public class UsersController(IUserService userService) : ControllerBase
     private readonly IUserService _userService = userService;
 
     [HttpGet("")]
-    public async Task< IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         return Ok(await _userService.GetAllAsync(cancellationToken));
     }
@@ -19,13 +14,13 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> Get([FromRoute] string id)
     {
-        var result=await _userService.GetAsync(id);
+        var result = await _userService.GetAsync(id);
         return result.IsSuccess ? Ok(result.Value) : result.ToProblem();
     }
 
     [HttpPost("")]
     [HasPermission(Permissions.AddUsers)]
-    public async Task<IActionResult> Add([FromBody] CreateUserRequest  request,CancellationToken cancellationToken)
+    public async Task<IActionResult> Add([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var result = await _userService.AddAsync(request, cancellationToken);
 

@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.RateLimiting;
-using SurveyManagementSystem.Api.Abstractions;
-
-namespace SurveyManagementSystem.Api.Controllers;
+﻿namespace SurveyManagementSystem.Api.Controllers;
 
 [Route("[controller]")]
 [ApiController]
 [EnableRateLimiting(RateLimiters.IpLimiter)]
 public class AuthController(IAuthService authService, ILogger<AuthController> logger) : ControllerBase
 {
-    
+
     private readonly IAuthService _authService = authService;
-    private readonly ILogger<AuthController> _logger = logger; 
+    private readonly ILogger<AuthController> _logger = logger;
 
     [HttpPost("")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request, CancellationToken cancellationToken)

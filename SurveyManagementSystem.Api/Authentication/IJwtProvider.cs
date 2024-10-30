@@ -1,4 +1,5 @@
-﻿namespace SurveyManagementSystem.Api.Authentication;
+﻿
+namespace SurveyManagementSystem.Api.Authentication;
 
 public interface IJwtProvider
 {

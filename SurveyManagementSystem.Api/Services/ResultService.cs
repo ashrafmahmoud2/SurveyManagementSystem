@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace SurveyManagementSystem.Api.Services;
+﻿namespace SurveyManagementSystem.Api.Services;
 
 public class ResultService(ApplicationDbContext context) : IResultService
 {

@@ -1,35 +1,55 @@
-﻿// Global using directives
+﻿// System namespaces
+// Third-party libraries
+global using Asp.Versioning;
+global using Asp.Versioning.ApiExplorer;
 global using FluentValidation;
+global using FluentValidation.AspNetCore;
+global using Hangfire;
 global using Mapster;
+global using MapsterMapper;
+// Microsoft namespaces
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.RateLimiting;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using Microsoft.Extensions.Options;
 global using Microsoft.IdentityModel.Tokens;
+// Project-specific namespaces
+global using SurveyManagementSystem.Abstractions;
+global using SurveyManagementSystem.Api.Abstractions;
+global using SurveyManagementSystem.Api.Abstractions.Const;
+global using SurveyManagementSystem.Api.Abstractions.ResultPattern;
+global using SurveyManagementSystem.Api.Authentication;
+global using SurveyManagementSystem.Api.Authentication.Filters;
+global using SurveyManagementSystem.Api.Authentication.OptionsPattern;
+global using SurveyManagementSystem.Api.Contracts.Answer;
+global using SurveyManagementSystem.Api.Contracts.Auth;
+global using SurveyManagementSystem.Api.Contracts.Common;
+global using SurveyManagementSystem.Api.Contracts.Email;
+global using SurveyManagementSystem.Api.Contracts.Polls;
+global using SurveyManagementSystem.Api.Contracts.Question;
+global using SurveyManagementSystem.Api.Contracts.Results;
+global using SurveyManagementSystem.Api.Contracts.Roles;
+global using SurveyManagementSystem.Api.Contracts.Users;
+global using SurveyManagementSystem.Api.Contracts.Vote;
+global using SurveyManagementSystem.Api.Entities;
+global using SurveyManagementSystem.Api.Entitles;
+global using SurveyManagementSystem.Api.Errors;
+global using SurveyManagementSystem.Api.Extensions;
+global using SurveyManagementSystem.Api.Helpers;
+global using SurveyManagementSystem.Api.OpenApi;
+global using SurveyManagementSystem.Api.Services;
+global using SurveyManagementSystem.Api.Settings;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Linq;
 global using System.Reflection;
 global using System.Security.Claims;
 global using System.Text;
-global using Microsoft.AspNetCore.Identity;
-
-
-// Project-specific using directives
-global using SurveyManagementSystem.Abstractions;
-global using SurveyManagementSystem.Api.Abstractions.ResultPattern;
-global using SurveyManagementSystem.Api.Contracts.Polls;
-global using SurveyManagementSystem.Api.Contracts.Results;
-global using SurveyManagementSystem.Api.Contracts.Vote;
-global using SurveyManagementSystem.Api.Entitles;
-global using SurveyManagementSystem.Api.Entities;
-global using SurveyManagementSystem.Api.Errors;
-global using SurveyManagementSystem.Api.Extensions;
-global using SurveyManagementSystem.Api.Services;
-global using SurveyManagementSystem.Api.Contracts.Auth;
-global using SurveyManagementSystem.Api.Helpers;
-global using SurveyManagementSystem.Api.Contracts.Users;
-
+global using System.Text.Json;
+global using System.Threading.RateLimiting;
+ 
 
