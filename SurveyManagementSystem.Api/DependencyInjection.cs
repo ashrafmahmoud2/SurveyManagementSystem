@@ -1,37 +1,33 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SurveyManagementSystem.Api.HealthChecks;
-
-
-
+using SurveyManagementSystem.Api.Settings;
 
 namespace SurveyManagementSystem;
 
 public static class DependencyInjection
 {
-
-    public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDependencies(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        // Add services to the container.
         services.AddControllers();
-        services.AddOpenApi();
-
-        // Suppressing warnings temporarily
-#pragma warning disable
-        services.AddHybridCache();
-#pragma warning restore
+        
+       #pragma warning disable
+        services.AddHybridCache();       
+       #pragma warning disable
 
         services.AddCors(options =>
             options.AddDefaultPolicy(builder =>
-                builder.AllowAnyMethod()
-                       .AllowAnyHeader()
-                       .WithOrigins(configuration.GetSection("AllowedOrigins").Get<string[]>()!))
+                builder
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithOrigins(configuration.GetSection("AllowedOrigins").Get<string[]>()!)
+            )
         );
 
-        // Register IHttpContextAccessor
-        services.AddHttpContextAccessor();
+        services.AddAuthConfig(configuration);
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        var connectionString = configuration.GetConnectionString("DefaultConnection") ??
+            throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
@@ -40,46 +36,38 @@ public static class DependencyInjection
             .AddMapsterConfig()
             .AddFluentValidationConfig();
 
-        services.AddAuthConfig(configuration);
-
-        services.AddBackgroundJobsConfig(configuration);
-
-        services.AddRateLimiter();
-
-        services.AddOpenApi();
-
-        // Register scoped services
-        services.AddScoped<IPollService, PollService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IPollService, PollService>();
         services.AddScoped<IQuestionServices, QuestionServices>();
         services.AddScoped<IVoteService, VoteService>();
         services.AddScoped<IResultService, ResultService>();
-        services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<ITelegramBotService, TelegramBotService>();
-        services.AddScoped<INotificationService, NotificationService>();
-        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IUserService, UserService>();
 
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
+        services.AddBackgroundJobsConfig(configuration);
+        services.AddHttpContextAccessor();
 
-        // Configure Email Service
-        services.AddOptions<EmailSettings>()
-            .Bind(configuration.GetSection("Mailjet"))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
 
-        // Configure Telegram Service
-        services.Configure<TelegramBotSettings>(configuration.GetSection("TelegramBot"));
+        //Configure Email Service
+                services.AddOptions<EmailSettings>()
+                    .Bind(configuration.GetSection("Mailjet"))
+                    .ValidateDataAnnotations()
+                    .ValidateOnStart();
 
-        //Health Checks
+
+        
+
         services.AddHealthChecks()
-        .AddSqlServer(name: "database", connectionString: connectionString!)
-        .AddHangfire(options => { options.MinimumAvailableServers = 1; })
-        .AddCheck<MailProviderHealthCheck>(name: "mail service");
+            .AddSqlServer(name: "database", connectionString: connectionString!)
+            .AddHangfire(options => { options.MinimumAvailableServers = 1; })
+            .AddCheck<MailProviderHealthCheck>(name: "mail service");
 
+        services.AddRateLimitingConfig();
 
-        //Api Versioning
         services.AddApiVersioning(options =>
         {
             options.DefaultApiVersion = new ApiVersion(1.0);
@@ -95,8 +83,8 @@ public static class DependencyInjection
         });
 
         services
-         .AddEndpointsApiExplorer()
-         .AddOpenApiServices();
+            .AddEndpointsApiExplorer()
+            .AddOpenApiServices();
 
         return services;
     }
@@ -117,11 +105,11 @@ public static class DependencyInjection
 
         return services;
     }
-
     private static IServiceCollection AddMapsterConfig(this IServiceCollection services)
     {
         var mappingConfig = TypeAdapterConfig.GlobalSettings;
         mappingConfig.Scan(Assembly.GetExecutingAssembly());
+
         services.AddSingleton<IMapper>(new Mapper(mappingConfig));
 
         return services;
@@ -136,11 +124,12 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuthConfig(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddIdentity<ApplicationUser, ApplicationRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
 
         services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
@@ -184,7 +173,8 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddBackgroundJobsConfig(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddBackgroundJobsConfig(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddHangfire(config => config
             .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
@@ -211,7 +201,7 @@ public static class DependencyInjection
                         PermitLimit = 2,
                         Window = TimeSpan.FromSeconds(20)
                     }
-            )
+                )
             );
 
             rateLimiterOptions.AddPolicy(RateLimiters.UserLimiter, httpContext =>
@@ -222,7 +212,7 @@ public static class DependencyInjection
                         PermitLimit = 2,
                         Window = TimeSpan.FromSeconds(20)
                     }
-            )
+                )
             );
 
             rateLimiterOptions.AddConcurrencyLimiter(RateLimiters.Concurrency, options =>
@@ -231,8 +221,6 @@ public static class DependencyInjection
                 options.QueueLimit = 100;
                 options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
             });
-
-
         });
 
         return services;

@@ -5,7 +5,6 @@ using Scalar.AspNetCore;
 using Serilog;
 using SurveyManagementSystem;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);
@@ -21,9 +20,11 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
-
 }
 
+app.UseSerilogRequestLogging();
+
+app.UseHttpsRedirection();
 
 app.UseHangfireDashboard("/jobs", new DashboardOptions
 {
@@ -35,7 +36,7 @@ app.UseHangfireDashboard("/jobs", new DashboardOptions
             Pass = app.Configuration.GetValue<string>("HangfireSettings:Password")
         }
     ],
-    DashboardTitle = "Survey Managment Dashboard",
+    DashboardTitle = "Survey Basket Dashboard"
 });
 
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
@@ -44,13 +45,15 @@ var notificationService = scope.ServiceProvider.GetRequiredService<INotification
 
 RecurringJob.AddOrUpdate("SendNewPollsNotification", () => notificationService.SendNewPollsNotification(null), Cron.Daily);
 
-app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.UseExceptionHandler();
+
+app.UseRateLimiter();
 
 app.MapHealthChecks("health", new HealthCheckOptions
 {

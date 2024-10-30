@@ -42,4 +42,17 @@
     <PackageReference Include="Telegram.BotAPI" Version="7.10.0" />
   </ItemGroup>
 
+
+	<ItemGroup>
+	<Content Include="Templates\**">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
+
 </Project>
