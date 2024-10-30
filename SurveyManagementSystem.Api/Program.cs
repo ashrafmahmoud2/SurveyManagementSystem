@@ -1,10 +1,9 @@
-using SurveyManagementSystem;
-using Serilog;
-using Serilog.Events;
-using Hangfire;
 using HangfireBasicAuthenticationFilter;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Scalar.AspNetCore;
+using Serilog;
+using SurveyManagementSystem;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +20,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
+
 }
 
 

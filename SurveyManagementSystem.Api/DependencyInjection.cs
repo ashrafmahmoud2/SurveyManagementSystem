@@ -1,18 +1,7 @@
-﻿using Asp.Versioning;
-using Asp.Versioning.ApiExplorer;
-using FluentValidation.AspNetCore;
-using Hangfire;
-using MapsterMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.RateLimiting;
-using SurveyManagementSystem.Api.Abstractions;
-using SurveyManagementSystem.Api.Authentication;
-using SurveyManagementSystem.Api.Authentication.Filters;
-using SurveyManagementSystem.Api.Authentication.OptionsPattern;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using SurveyManagementSystem.Api.HealthChecks;
-using SurveyManagementSystem.Api.OpenApi;
-using SurveyManagementSystem.Api.Settings;
-using System.Threading.RateLimiting;
+
+
 
 
 namespace SurveyManagementSystem;
@@ -27,9 +16,9 @@ public static class DependencyInjection
         services.AddOpenApi();
 
         // Suppressing warnings temporarily
-         #pragma warning disable
-         services.AddHybridCache();
-         #pragma warning restore
+#pragma warning disable
+        services.AddHybridCache();
+#pragma warning restore
 
         services.AddCors(options =>
             options.AddDefaultPolicy(builder =>
@@ -105,6 +94,9 @@ public static class DependencyInjection
             options.SubstituteApiVersionInUrl = true;
         });
 
+        services
+         .AddEndpointsApiExplorer()
+         .AddOpenApiServices();
 
         return services;
     }
@@ -232,7 +224,7 @@ public static class DependencyInjection
                     }
             )
             );
-           
+
             rateLimiterOptions.AddConcurrencyLimiter(RateLimiters.Concurrency, options =>
             {
                 options.PermitLimit = 1000;
@@ -240,7 +232,7 @@ public static class DependencyInjection
                 options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
             });
 
-           
+
         });
 
         return services;
