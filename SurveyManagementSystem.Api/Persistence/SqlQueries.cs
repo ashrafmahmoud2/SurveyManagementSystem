@@ -26,6 +26,7 @@
 
 
 
+//Un Hash password in Secrit .jesone;..............................
 //-- Users Table
 //INSERT INTO [dbo].[AspNetUsers] 
 //    ( [Id], [FirstName], [LastName], [IsDisabled], [UserName], [NormalizedUserName], 
@@ -81,7 +82,7 @@
 
 
 
-    
+
 //--QuestionTable
 //    USE [SurveyManagementSystem]
 //GO

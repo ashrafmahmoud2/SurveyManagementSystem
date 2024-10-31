@@ -1,4 +1,6 @@
 ﻿namespace SurveyManagementSystem.Api.Controllers;
+
+
 [Route("api/polls/{pollId}/[controller]")]
 [ApiController]
 [Authorize(Roles = DefaultRoles.Member.Name)]
