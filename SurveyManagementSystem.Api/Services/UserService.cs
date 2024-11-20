@@ -4,7 +4,7 @@ public class UserService(UserManager<ApplicationUser> userManager,
     IRoleService roleService,
     ApplicationDbContext context) : IUserService
 {
-    //stop 25/5
+
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly IRoleService _roleService = roleService;
     private readonly ApplicationDbContext _context = context;

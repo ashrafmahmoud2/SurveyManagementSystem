@@ -15,5 +15,3 @@ public static class DefaultUsers
     }
 }
 
-//stop in get the add min password;
-//530 10
